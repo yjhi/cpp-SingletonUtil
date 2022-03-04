@@ -5,18 +5,48 @@
 #include "framework.h"
 #include "SingletonUtil.h"
 
-
-// 这是导出变量的一个示例
-SINGLETONUTIL_API int nSingletonUtil=0;
-
-// 这是导出函数的一个示例。
-SINGLETONUTIL_API int fnSingletonUtil(void)
+SINGLETONUTIL_API bool __stdcall SetSingleApp(const char * lock)
 {
-    return 0;
+
+	HANDLE hSem = CreateSemaphore(NULL, 1, 1, lock);
+
+
+	if (GetLastError() == ERROR_ALREADY_EXISTS)
+	{
+		return false;
+	}
+
+	return true;
 }
 
-// 这是已导出类的构造函数。
-CSingletonUtil::CSingletonUtil()
+
+SINGLETONUTIL_API bool __stdcall SetSingleAndTopApp(const char * lock, const char *data, int type)
 {
-    return;
+	HANDLE hSem = CreateSemaphore(NULL, 1, 1, lock);
+
+	if (GetLastError() == ERROR_ALREADY_EXISTS)
+	{
+		HWND h = NULL;
+
+		if (type == 1)
+		{
+			h = ::FindWindow(NULL, data);
+		}
+		else {
+			h = ::FindWindow(data, NULL);
+		}
+
+		if (h)
+		{
+			ShowWindow(h, SW_SHOWNORMAL | SW_NORMAL | SW_RESTORE);
+			SetForegroundWindow(h);
+		}
+
+		return false;
+
+	}
+
+	return true;
+
+
 }

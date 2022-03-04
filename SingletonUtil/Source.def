@@ -1,0 +1,5 @@
+LIBRARY SingletonUtil
+
+EXPORTS
+SetSingleApp
+SetSingleAndTopApp
