@@ -1,0 +1,2 @@
+#define SINGLETONUTIL_API __declspec(dllexport)
+#define SINGLETONUTIL_API __declspec(dllimport)
